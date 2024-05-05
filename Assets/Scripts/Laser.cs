@@ -9,16 +9,20 @@ public class Laser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //test
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        // translate laser up
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
         if (transform.position.y > 8f)
         {
+            // check if this object has a parent
+            if (transform.parent)
+            {
+                Destroy(transform.parent.gameObject);
+            }
             Destroy(this.gameObject);
         }
     }
