@@ -21,9 +21,13 @@ public class Player : MonoBehaviour
     private bool _isSpeedBoostActive = false;
     [SerializeField]
     private bool _isShieldActive = false;
+    [SerializeField]
+    private int _score = 0;
 
     [SerializeField]
     private GameObject shieldVisualizer;
+
+    private UIManager _uiManager;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +37,11 @@ public class Player : MonoBehaviour
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL");
+        }
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if (_uiManager == null)
+        {
+            Debug.Log("The UI Manager is NULL");
         }
     }
 
@@ -96,7 +105,10 @@ public class Player : MonoBehaviour
             shieldVisualizer.SetActive(false);
             return;
         }
+        
         _lives -= 1;
+        _uiManager.UpdateLives(_lives);
+
         if (_lives < 1)
         {
             // Communicate with SpawnManager to stop spawning
@@ -133,6 +145,14 @@ public class Player : MonoBehaviour
     {
         _isShieldActive = true;
         shieldVisualizer.SetActive(true);
+    }
+
+    // method to add 10 to score
+    // communicate with UI to update the score
+    public void AddScore(int points)
+    {
+        _score += points;
+        _uiManager.UpdateScore(_score);
     }
 
 }
