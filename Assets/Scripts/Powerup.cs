@@ -5,7 +5,11 @@ using UnityEngine;
 public class Powerup : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 4.0f;
+    private float _speed = 3.0f;
+    // ID for powerups
+    [SerializeField]
+    private int _powerupID;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,8 +19,6 @@ public class Powerup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Time.deltaTime);
-        // move down at a speed of 3 (adjust in the inspector)
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
         // When we leave the screen, destroy us
         if (transform.position.y < -4.5f)
@@ -34,7 +36,19 @@ public class Powerup : MonoBehaviour
             Player player = collision.GetComponent<Player>();
             if (player)
             {
-                player.TripleShotActive();
+                switch(_powerupID)
+                {
+                    case 0:
+                        player.TripleShotActive();
+                        break;
+                    case 1:
+                        player.SpeedBoostActive();
+                        break;
+                    case 2:
+                        player.ShieldsActive();
+                        break;
+                }
+                
             }
             Destroy(this.gameObject);
         }

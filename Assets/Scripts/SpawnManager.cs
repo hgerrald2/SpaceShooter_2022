@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyContainer;
 
     [SerializeField]
-    private GameObject _tripleShotPrefab;
+    private GameObject[] powerups;
     // We do not need a container because we are not respawning it if it passes through the screen
 
     private bool _stopSpawning = false;
@@ -44,7 +44,8 @@ public class SpawnManager : MonoBehaviour
         while (!_stopSpawning)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            GameObject newPowerup = Instantiate(_tripleShotPrefab, posToSpawn, Quaternion.identity);
+            int randomPowerup = Random.Range(0, 3);
+            Instantiate(powerups[randomPowerup], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
         }
     }
