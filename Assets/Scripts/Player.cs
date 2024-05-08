@@ -23,17 +23,26 @@ public class Player : MonoBehaviour
     private bool _isShieldActive = false;
     [SerializeField]
     private int _score = 0;
+    [SerializeField]
+    private GameObject _rightEngine;
+    [SerializeField] private GameObject _leftEngine;
 
     [SerializeField]
     private GameObject shieldVisualizer;
 
     private UIManager _uiManager;
 
+    [SerializeField]
+    private AudioClip _laserSoundClip;
+    private AudioSource _audioSource;
+
+
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>(); // will get access to spawn manager script
+        _audioSource = GetComponent<AudioSource>();
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL");
@@ -42,6 +51,14 @@ public class Player : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.Log("The UI Manager is NULL");
+        }
+        if (_audioSource == null)
+        {
+            Debug.Log("Audio source on player is null");
+        }
+        else
+        {
+            _audioSource.clip = _laserSoundClip;
         }
     }
 
@@ -93,6 +110,8 @@ public class Player : MonoBehaviour
         {
             Instantiate(laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
         }
+
+        _audioSource.Play();
         
     }
 
@@ -107,6 +126,16 @@ public class Player : MonoBehaviour
         }
         
         _lives -= 1;
+        if (_lives == 2)
+        {
+            _leftEngine.SetActive(true);
+        }
+        else if (_lives == 1)
+        {
+            _rightEngine.SetActive(true);
+        }
+
+
         _uiManager.UpdateLives(_lives);
 
         if (_lives < 1)

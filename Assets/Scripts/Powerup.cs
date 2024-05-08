@@ -9,12 +9,8 @@ public class Powerup : MonoBehaviour
     // ID for powerups
     [SerializeField]
     private int _powerupID;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private AudioClip _clip;
 
     // Update is called once per frame
     void Update()
@@ -34,6 +30,7 @@ public class Powerup : MonoBehaviour
         {
             // communicate with the player script
             Player player = collision.GetComponent<Player>();
+            AudioSource.PlayClipAtPoint(_clip, transform.position);
             if (player)
             {
                 switch(_powerupID)
